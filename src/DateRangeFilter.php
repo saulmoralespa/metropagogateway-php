@@ -8,7 +8,6 @@
 
 namespace MetropagoGateway;
 
-
 class DateRangeFilter
 {
     public $Date1 = null;

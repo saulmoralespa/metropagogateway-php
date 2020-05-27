@@ -1,7 +1,13 @@
 <?php 
 use PHPUnit\Framework\TestCase;
-use Saulmoralespa\Metropagogateway\ACH;
-use Saulmoralespa\MetropagoGateway\Address;
+use MetropagoGateway\ACH;
+use MetropagoGateway\Address;
+use MetropagoGateway\Customer;
+use MetropagoGateway\CustomerManager;
+use MetropagoGateway\CreditCard;
+use MetropagoGateway\MetropagoGateway;
+use MetropagoGateway\Transaction;
+use MetropagoGateway\TransactionManager;
 
 /**
 *  Corresponding Class to test YourClass class
@@ -13,33 +19,55 @@ use Saulmoralespa\MetropagoGateway\Address;
 */
 class MetropagoGatewayTest extends TestCase
 {
-	
-  /**
-  * Just check if the YourClass has no syntax error 
-  *
-  * This is just a simple check to make sure your library has no syntax error. This helps you troubleshoot
-  * any typo before you even use this library in a real project.
-  *
-  */
-  public function testIsThereAnySyntaxError()
+    /**
+     * @var
+     */
+    public $client;
+
+  public function setUp()
   {
-	$var = new \MetropagoGateway\MetropagoGateway(true,"100177","100177001","","");
-	$this->assertTrue(is_object($var));
-	unset($var);
+      $dotenv = Dotenv\Dotenv::createMutable(__DIR__ . '/../');
+      $dotenv->load();
+      $this->client = new MetropagoGateway(true,getenv('MERCHANTID'),getenv('TERMINALID'),"","");
   }
 
 
   public function testCustom()
   {
-      $customer = new \MetropagoGateway\ACH();
+      $customer = new ACH();
       $this->assertTrue(is_object($customer));
-      unset($customer);
   }
 
-    public function testCustomerManager()
-    {
-        $customer = new \MetropagoGateway\Address();
-        $this->assertTrue(is_object($customer));
-        unset($customer);
-    }
+  public function testCustomerManager()
+   {
+      $customer = new Address();
+      $this->assertTrue(is_object($customer));
+   }
+
+   public function testAddCustomer()
+   {
+       $customer = new Customer();
+       $customer->UniqueIdentifier =mt_rand();
+       $customer->FirstName = "John";
+       $CustManager  = new CustomerManager($this->client);
+       $customerResult = $CustManager->AddCustomer($customer);
+       $this->assertTrue($customerResult->ResponseDetails->IsSuccess);
+   }
+
+   public function testSalerequest()
+   {
+       $transRequest = new Transaction();
+       $transRequest->CustomerData = new Customer();
+       $transRequest->CustomerData->CustomerId = "11555";
+       $transRequest->CustomerData->CreditCards =array();
+       $card = new CreditCard();
+       $card->ExpirationDate = "0118";
+       $card->Token="ae52e744-4ea6-4ce8-a067-e2ff293eec90";
+       $transRequest->CustomerData->CreditCards[] = $card;
+       $transRequest->Amount = "1";
+       $transRequest->OrderTrackingNumber=rand();
+       $TrxManager  = new TransactionManager($this->client);
+       $sale_response = $TrxManager->Sale($transRequest);
+       $this->assertTrue($sale_response->ResponseDetails->IsSuccess);
+   }
 }

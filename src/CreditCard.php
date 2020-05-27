@@ -13,7 +13,7 @@
 
 namespace MetropagoGateway;
 
-use MetropagoGateway\CreditCardResponse;
+use MetropagoGateway\ValidationError;
 
 class CreditCard
 {

@@ -14,8 +14,9 @@
  * @author Raza
   */
 
-namespace MetropagoGateway;
+ namespace MetropagoGateway;
 
+ use Exception;
  use MetropagoGateway\MetropagoGateway;
  use MetropagoGateway\BaseManager;
  use MetropagoGateway\Transaction;

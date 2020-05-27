@@ -24,13 +24,14 @@ class MetropagoGateway
     public $PublicKey = "";
     public $PrivateKey = "";
 
-    function __construct($environment, $merchantId, $terminalId , $publicKey, $privateKey) {
+    function __construct($environment, $merchantId, $terminalId , $publicKey, $privateKey)
+    {
         $this->Environment = $environment;
         $this->MerchantId = $merchantId;
         $this->TerminalId = $terminalId;
         $this->PublicKey = $publicKey;
         $this->PrivateKey = $privateKey;
 
-        $this->GatewayURL = ($environment) ? 'https://gateway.merchantprocess.net/api/test-v3/api/' : 'https://gateway.merchantprocess.net/api/prod-v1.0/api/';
+        $this->GatewayURL = ($environment) ? 'http://securegateway.merchantprocess.net/NeogatewayApi_Test/api/' : 'https://gateway.merchantprocess.net/api/prod-v1.0/api/';
     }
 }

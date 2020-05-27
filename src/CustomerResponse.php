@@ -15,7 +15,6 @@ namespace MetropagoGateway;
 
 use MetropagoGateway\ValidationError;
 
-
 class CustomerResponse
 {
     public $ValidationErrors = null;

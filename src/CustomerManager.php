@@ -17,6 +17,7 @@
 
 namespace MetropagoGateway;
 
+use Exception;
 use MetropagoGateway\MetropagoGateway;
 use MetropagoGateway\BaseManager;
 use MetropagoGateway\Customer;
@@ -26,24 +27,20 @@ use MetropagoGateway\CreditCardResponse;
 
 class CustomerManager extends BaseManager
 {
-    public function __construct(MetropagoGateway $metropagoGateway)
-    {
+    public function __construct(MetropagoGateway $metropagoGateway) {        
         parent::__construct($metropagoGateway);
     }
 
-    public function AddCustomer($customer)
-    {
+    public function AddCustomer($customer){
         $customer->CustomerId = "0";
         return $this->SaveCustomer($customer);
     }
 
-    public function UpdateCustomer($customer)
-    {
+    public function UpdateCustomer($customer){
         return $this->SaveCustomer($customer);
     }
 
-    public function UpdateCard($cardDetail)
-    {
+    public function UpdateCard($cardDetail){
         try{
             $Response = $this->SendAPICurlRequest($cardDetail, $this->MetropagoObject->GatewayURL . "Card/SaveCreditCardInformation", "POST");     
             if($Response == null){
@@ -63,8 +60,7 @@ class CustomerManager extends BaseManager
         return $cardDetail;
     }
 
-    private function SaveCustomer($customer)
-    {
+    private function SaveCustomer($customer){
         try{
             $Response = $this->SendAPICurlRequest($customer, $this->MetropagoObject->GatewayURL . "Customer/SaveCustomerInformation", "POST");                 
             if($Response == null){
@@ -84,8 +80,7 @@ class CustomerManager extends BaseManager
         return $customer;
     }
     
-    public function SearchCustomer($searchFilter)
-    {
+    public function SearchCustomer($searchFilter){
         $Result = array();
         try{
             $Response = $this->SendAPICurlRequest($searchFilter, $this->MetropagoObject->GatewayURL . "Customer/GetCustomersByFilter", "POST");     

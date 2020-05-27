@@ -55,4 +55,4 @@ class AmountRangeFilter
         $this->Amount2= $amountTo;
         $this->Operation = "BETWEEN";
     }
- }
+}

@@ -15,12 +15,11 @@
 
 namespace MetropagoGateway;
 
-use MetropagoGateway\MetropagoGateway;
-
 abstract class BaseManager
 {    
     protected  $MetropagoObject = null;
-    public function __construct(MetropagoGateway $metropagoGateway) {
+    public function __construct(MetropagoGateway $metropagoGateway)
+    {
         $this->MetropagoObject = new MetropagoGateway($metropagoGateway->Environment, $metropagoGateway->MerchantId, $metropagoGateway->TerminalId, $metropagoGateway->PublicKey, $metropagoGateway->PrivateKey);
     }
     protected function SendAPICurlRequest($model, $requestURL, $method)
@@ -68,4 +67,3 @@ abstract class BaseManager
         return $model ;
     }
 }
-
